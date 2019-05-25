@@ -9,6 +9,10 @@
       <f7-page>
         <f7-navbar title="Left Panel"></f7-navbar>
         <f7-block>Left panel content goes here</f7-block>
+         <f7-list>
+          <f7-list-item  v-for="item in menuItems" :key="item.title" :link="item.link" :title="item.title" v-on:click="handle_function_call(item.handler)" view="#main-view" panel-close></f7-list-item>
+     <!-- <f7-list-item  v-for="item in menuItems" :key="item.title" :link="item.link" :title="item.title" v-on:click="handle_function_call(item.handler)" view="#main-view" panel-close></f7-list-item>
+     --></f7-list>
       </f7-page>
     </f7-view>
   </f7-panel>
@@ -26,7 +30,7 @@
 
 
   <!-- Your main view, should have "view-main" class -->
-  <f7-view main class="safe-areas" url="/"></f7-view>
+  <f7-view id="main-view" main class="safe-areas" url="/"></f7-view>
 
 
   <!-- Popup -->
@@ -83,6 +87,8 @@
   export default {
     data() {
       return {
+        isLoggedIn: false,
+        currentUser: false,
         // Framework7 Parameters
         f7params: {
           name: 'fm7vue_boiler2', // App name
@@ -107,10 +113,45 @@
         password: '',
       }
     },
+    computed: {
+      menuItems () {
+        let menuItems = [
+          {icon:'', title:'Register', link: '/register/'},
+          {icon:'', title:'Login', link: '/login/'}
+          
+        ]
+        if(this.userIsAuthenticated) {
+          menuItems = [
+         
+            {icon:'', title:'item1', link: '/'},
+            {icon:'', title:'item2', link: '/'},
+            {icon:'', title:'item3', link: '/'},
+            {icon:'', title:'Logout', link: '/login/', handler:"logout"}
+          ]
+        }
+        return menuItems;
+      },
+      userIsAuthenticated () {
+        return this.$store.getters.user !== null && this.$store.getters.user !== undefined
+      }
+    },
     methods: {
       alertLoginData() {
         this.$f7.dialog.alert('Username: ' + this.username + '<br>Password: ' + this.password);
-      }
+      },
+       logout: function() {
+        this.$store.dispatch('logout');
+        /* const self = this;
+        const router = self.$f7router;
+        firebase.auth().signOut().then(() => {
+          this.isLoggedIn = false;
+          console.log("logged out!");
+           //router.navigate('/login/');
+          }); */
+      },
+      handle_function_call(function_name) {
+      this[function_name]()
+    }
     },
     mounted() {
       this.$f7ready((f7) => {

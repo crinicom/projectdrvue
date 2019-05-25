@@ -2,7 +2,8 @@
 import HomePage from '../pages/home.vue';
 import AboutPage from '../pages/about.vue';
 import FormPage from '../pages/form.vue';
-
+import Login from '../pages/login.vue';
+import Register from '../pages/register.vue';
 
 import DynamicRoutePage from '../pages/dynamic-route.vue';
 import RequestAndLoad from '../pages/request-and-load.vue';
@@ -21,7 +22,14 @@ var routes = [
     path: '/form/',
     component: FormPage,
   },
-
+  {
+    path: '/login/',
+    component: Login,
+  },
+  {
+    path: '/register/',
+    component: Register,
+  },
 
   {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
