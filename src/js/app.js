@@ -31,5 +31,8 @@ const myApp = new Vue({
   components: {
     app: App
   },
+  created() {
+    this.$store.dispatch('loadProjects')
+  }
 });
 export default myApp;

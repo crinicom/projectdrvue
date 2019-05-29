@@ -19,9 +19,30 @@ export const store = new Vuex.Store({
         },
         setUser (state, payload) {
             state.user = payload
+        },
+        setLoadedProjects (state, payload) {
+            state.loadedProjects = payload;
         }
     },
     actions: {
+        loadProjects({commit}) {
+            firebase.database().ref('projects').once('value')
+            .then((data) => {
+                const projects = [];
+                const obj = data.val();
+                for (let key in obj) {
+                    projects.push({
+                            id: key,
+                            info: obj[key].info
+
+                        })
+                }
+                commit('setLoadedProjects', projects)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        },
         createProject ({commit}, payload) {
             const project = {
                 info: {
@@ -42,7 +63,8 @@ export const store = new Vuex.Store({
             firebase.database().ref('projects').push(project)
                 .then((data)=> {
                     console.log(data);
-                    commit('createProject', project);
+                    const key = data.key;
+                    commit('createProject', { ...project, id: key});
                 })
                 .catch((error) => {
                     console.log(error);
