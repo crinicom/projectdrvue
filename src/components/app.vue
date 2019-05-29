@@ -125,7 +125,7 @@
          
             {icon:'', title:'item1', link: '/'},
             {icon:'', title:'item2', link: '/'},
-            {icon:'', title:'item3', link: '/'},
+            {icon:'', title:'crear proyecto', link: '/', handler:"create"},
             {icon:'', title:'Logout', link: '/login/', handler:"logout"}
           ]
         }
@@ -148,6 +148,10 @@
           console.log("logged out!");
            //router.navigate('/login/');
           }); */
+      },
+       create: function() {
+        this.$store.dispatch('createProject');
+        
       },
       handle_function_call(function_name) {
       this[function_name]()

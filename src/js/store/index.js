@@ -14,11 +14,40 @@ export const store = new Vuex.Store({
         user: null
     },
     mutations: {
+        createProject(state, payload) {
+            state.loadedProjects.push(payload);
+        },
         setUser (state, payload) {
             state.user = payload
         }
     },
     actions: {
+        createProject ({commit}, payload) {
+            const project = {
+                info: {
+                    title: '',
+                    description: '',
+                    background: '',
+                    webdrive: {
+                        URL: '',
+                        provider: ''
+                    },
+                    risks: [],
+                    creation_date: '',
+                    canAccess: [],
+                    creator: ''   
+                }
+
+            }
+            firebase.database().ref('projects').push(project)
+                .then((data)=> {
+                    console.log(data);
+                    commit('createProject', project);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        },
         //createmeetup()
         signUserUp ({commit}, payload) {
             const self = this;
