@@ -119,6 +119,9 @@ export const store = new Vuex.Store({
                     }); */
             });
         },
+        autoLogin ({commit}, payload) {
+            commit('setUser', {id: payload.uid })
+        },
     logout ({commit}, payload) {
         firebase.auth().signOut().then(() => {
             this.isLoggedIn = false;

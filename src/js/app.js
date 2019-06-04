@@ -1,6 +1,7 @@
 // Import Vue
 import Vue from 'vue';
 import './firebaseInit';
+import * as firebase from 'firebase';
 // Import Framework7
 import Framework7 from 'framework7/framework7.esm.bundle.js';
 
@@ -32,6 +33,11 @@ const myApp = new Vue({
     app: App
   },
   created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user) {
+        this.$store.dispatch('autoLogin', user)
+      }
+    });
     this.$store.dispatch('loadProjects')  
   }
 });
