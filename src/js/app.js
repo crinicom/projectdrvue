@@ -32,7 +32,7 @@ const myApp = new Vue({
     app: App
   },
   created() {
-    this.$store.dispatch('loadProjects')
+    this.$store.dispatch('loadProjects')  
   }
 });
 export default myApp;

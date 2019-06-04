@@ -8,20 +8,49 @@ import Register from '../pages/register.vue';
 import DynamicRoutePage from '../pages/dynamic-route.vue';
 import RequestAndLoad from '../pages/request-and-load.vue';
 import NotFoundPage from '../pages/404.vue';
+import AuthGuard from './auth-guard.js';
+import securedRoute from './securedRoute.js';
+import {store} from './store';
+
+/* resuelvo el problema de check auth viendo esto
+http://forum.framework7.io/t/issue-with-f7-vue-routes-component-async-at-same-time-doesnt-works/4469/8
+funciona! */
+
+var accessed = false;
 
 var routes = [
+  securedRoute('/about/', AboutPage),
+  securedRoute('/form/', FormPage),
   {
     path: '/',
     component: HomePage,
   },
-  {
+  /* {
     path: '/about/',
-    component: AboutPage,
-  },
-  {
+    //component: AboutPage,
+    async: AuthGuard
+    
+   
+  }, */
+  /* {
     path: '/form/',
-    component: FormPage,
-  },
+    
+    async(routeTo, routeFrom, resolve, reject) {
+      console.log("entro al async")
+      if (store.getters.user) {
+        console.log("hay usuario")
+        resolve({component:FormPage
+        })
+      }
+      else
+      {
+        console.log("no hay usuario")
+        resolve({
+          component: Login})
+      }
+    },
+    //component: FormPage,
+  }, */
   {
     path: '/login/',
     component: Login,
@@ -34,6 +63,7 @@ var routes = [
   {
     path: '/dynamic-route/blog/:blogId/post/:postId/',
     component: DynamicRoutePage,
+    beforeEnter: AuthGuard,
   },
   {
     path: '/request-and-load/user/:userId/',
